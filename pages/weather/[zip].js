@@ -42,10 +42,7 @@ const WeatherPage = ({ forecast, zip }) => {
 
 export async function getServerSideProps({ params }) {
   const { zip } = params;
-  console.log(process.env.VERCEL_URL);
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
   const url = `${baseUrl}/api/weather?zip=${zip}`;
 
   try {

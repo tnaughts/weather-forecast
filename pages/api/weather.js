@@ -9,6 +9,6 @@ export default async function handler(req, res) {
     const response = await axios.get(url);
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error: "Error fetching weather data" });
+    res.status(500).json({ error: "Failed to fetch weather data" });
   }
 }
