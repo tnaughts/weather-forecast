@@ -1,3 +1,4 @@
+// pages/api/weather.js
 import axios from "axios";
 
 export default async function handler(req, res) {
@@ -9,6 +10,6 @@ export default async function handler(req, res) {
     const response = await axios.get(url);
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch weather data" });
+    res.status(500).json({ message: "Error fetching weather data" });
   }
 }
