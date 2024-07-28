@@ -44,7 +44,7 @@ const WeatherPage = ({ forecast, zip }) => {
 
 export async function getServerSideProps({ params }) {
   const { zip } = params;
-  const url = `${process.env.API_URL}/api/weather?zip=${zip}`;
+  const url = `${process.env.VERCEL_URL}/api/weather?zip=${zip}`;
 
   try {
     const response = await axios.get(url);
