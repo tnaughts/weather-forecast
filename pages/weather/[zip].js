@@ -45,7 +45,7 @@ export async function getServerSideProps({ params }) {
   const baseUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
     : "http://localhost:3000";
-  const url = `https://weather-forecast-pearl-eta.vercel.app/api/weather?zip=${zip}`;
+  const url = `${baseUrl}/api/weather?zip=${zip}`;
 
   try {
     const response = await axios.get(url);
