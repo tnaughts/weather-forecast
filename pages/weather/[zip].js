@@ -1,20 +1,18 @@
-// pages/weather/[zip].js
 import axios from "axios";
 import styles from "./WeatherPage.module.css";
 
-// Function to group weather data by date
-const groupByDate = (list) => {
-  return list.reduce((acc, weather) => {
-    const date = new Date(weather.dt * 1000).toLocaleDateString();
-    if (!acc[date]) {
-      acc[date] = [];
-    }
-    acc[date].push(weather);
-    return acc;
-  }, {});
-};
-
 const WeatherPage = ({ forecast, zip }) => {
+  const groupByDate = (list) => {
+    return list.reduce((acc, weather) => {
+      const date = new Date(weather.dt * 1000).toLocaleDateString();
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(weather);
+      return acc;
+    }, {});
+  };
+
   const groupedForecast = groupByDate(forecast.list);
 
   return (
@@ -44,7 +42,10 @@ const WeatherPage = ({ forecast, zip }) => {
 
 export async function getServerSideProps({ params }) {
   const { zip } = params;
-  const url = `${process.env.VERCEL_URL}/api/weather?zip=${zip}`;
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000";
+  const url = `${baseUrl}/api/weather?zip=${zip}`;
 
   try {
     const response = await axios.get(url);
