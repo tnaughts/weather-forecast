@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import styles from "./Navbar.module.css";
+import styles from "./NavBar.module.css";
 
 const Navbar = () => {
   const router = useRouter();
