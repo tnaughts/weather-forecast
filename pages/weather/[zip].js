@@ -71,7 +71,7 @@ export async function getServerSideProps({ params }) {
     };
   }
 
-  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/weather?zip=${zip}`;
+  const url = `${process.env.API_URL}/api/weather?zip=${zip}`;
 
   try {
     const response = await axios.get(url);
