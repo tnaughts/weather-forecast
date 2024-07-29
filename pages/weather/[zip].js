@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import styles from "./WeatherPage.module.css";
 
-// Function to group weather data by date
 const groupByDate = (list) => {
   return list.reduce((acc, weather) => {
     const date = new Date(weather.dt * 1000).toLocaleDateString();
