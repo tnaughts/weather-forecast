@@ -1,36 +1,33 @@
-// components/NavBar.js
 import { useRouter } from "next/router";
 import { useState } from "react";
-import styles from "./NavBar.module.css"; // Import CSS module for styling
+import styles from "./Navbar.module.css";
 
-const NavBar = () => {
-  const [zip, setZip] = useState("");
+const Navbar = () => {
   const router = useRouter();
-
-  const handleInputChange = (e) => {
-    setZip(e.target.value);
-  };
+  const [zip, setZip] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (zip && router.pathname !== "/") {
+
+    if (/^\d{5}$/.test(zip)) {
       router.push(`/weather/${zip}`);
-    } else if (zip) {
-      router.push(`/weather/${zip}`);
+    } else {
+      alert("Invalid zip code. Please enter a 5-digit zip code.");
     }
   };
 
+  if (router.pathname === "/") return null;
+
   return (
     <nav className={styles.navbar}>
-      <h1 className={styles.title}>Weather App</h1>
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           value={zip}
-          onChange={handleInputChange}
-          placeholder="Enter ZIP code"
-          required
+          onChange={(e) => setZip(e.target.value)}
+          placeholder="Enter zip code"
           className={styles.input}
+          maxLength={5}
         />
         <button type="submit" className={styles.button}>
           Search
@@ -40,4 +37,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default Navbar;

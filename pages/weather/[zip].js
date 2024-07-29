@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import styles from "./WeatherPage.module.css";
 
@@ -15,32 +15,17 @@ const groupByDate = (list) => {
   }, {});
 };
 
-const WeatherPage = ({ initialForecast, initialZip }) => {
-  const [forecast, setForecast] = useState(initialForecast);
-  const [zip, setZip] = useState(initialZip);
+const WeatherPage = ({ forecast, zip, isValidZip }) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const { zip } = router.query;
-
-      try {
-        const response = await axios.get(`/api/weather?zip=${zip}`);
-        setForecast(response.data);
-        setZip(zip);
-      } catch (error) {
-        console.error("Failed to fetch data", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (router.query.zip !== zip) {
-      fetchData();
-    }
-  }, [router.query.zip]);
+  if (!isValidZip) {
+    return (
+      <div className={styles.container}>
+        <h1 className={styles.header}>Invalid Zip Code</h1>
+      </div>
+    );
+  }
 
   const groupedForecast = groupByDate(forecast.list);
 
@@ -75,7 +60,18 @@ const WeatherPage = ({ initialForecast, initialZip }) => {
 
 export async function getServerSideProps({ params }) {
   const { zip } = params;
-  const url = `${process.env.API_URL}/api/weather?zip=${zip}`;
+
+  // Validate zip code
+  const isValidZip = /^\d{5}$/.test(zip);
+  if (!isValidZip) {
+    return {
+      props: {
+        isValidZip: false,
+      },
+    };
+  }
+
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/weather?zip=${zip}`;
 
   try {
     const response = await axios.get(url);
@@ -83,8 +79,9 @@ export async function getServerSideProps({ params }) {
 
     return {
       props: {
-        initialForecast: forecast,
-        initialZip: zip,
+        forecast,
+        zip,
+        isValidZip: true,
       },
     };
   } catch (error) {
