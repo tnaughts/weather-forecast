@@ -20,7 +20,7 @@ const Navbar = () => {
 
   return (
     <nav className={styles.navbar}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className={styles.navForm}>
         <input
           type="text"
           value={zip}
